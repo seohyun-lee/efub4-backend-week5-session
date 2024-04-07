@@ -23,7 +23,6 @@ public class PostService {
     private final PostRepository postRepository;
     private final AccountService accountService;
 
-    @Transactional
     public Post createNewPost(PostRequestDto dto){
         Account account = accountService.findAccountById(Long.parseLong(dto.getAccountId()));
         Post post = dto.toEntity(account);
@@ -57,7 +56,6 @@ public class PostService {
         return post.getPostId();
     }
 
-    @Transactional
     public void deletePost(Long id, Long accountId){
         //작성자가 맞는지 확인하기
         Post post = postRepository.findById(id)
