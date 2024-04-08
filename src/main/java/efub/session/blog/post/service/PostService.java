@@ -23,12 +23,8 @@ public class PostService {
     private final PostRepository postRepository;
     private final AccountService accountService;
 
-    public Post createNewPost(PostRequestDto dto){
-        Account account = accountService.findAccountById(Long.parseLong(dto.getAccountId()));
-        Post post = dto.toEntity(account);
-        Post savedPost = postRepository.save(post);
-        return savedPost;
-    }
+//    public Post createNewPost(PostRequestDto dto){
+//    }
 
     @Transactional(readOnly = true)
     public List<Post> findAllPosts(){
@@ -48,21 +44,9 @@ public class PostService {
         return post;
     }
 
-    public Long updatePost(Long id,PostRequestDto dto) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException("해당 id를 가진 Post를 찾을 수 없습니다.id="+id));
-        Account account = accountService.findAccountById(Long.parseLong(dto.getAccountId()));
-        post.update(dto,account);
-        return post.getPostId();
-    }
+//    public Long updatePost(Long id,PostRequestDto dto) {
+//    }
 
-    public void deletePost(Long id, Long accountId){
-        //작성자가 맞는지 확인하기
-        Post post = postRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException("해당 id를 가진 Post를 찾을 수 없습니다.id="+id));
-        if (!postRepository.existsByPostIdAndAccount_AccountId(id,accountId)){
-            throw new CustomDeleteException(PERMISSION_REJECTED_USER);
-        }
-        postRepository.delete(post);
-    }
+//    public void deletePost(Long id, Long accountId){
+//    }
 }
