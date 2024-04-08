@@ -16,14 +16,12 @@ import java.util.List;
 import static efub.session.blog.exception.ErrorCode.PERMISSION_REJECTED_USER;
 import static java.lang.Boolean.*;
 
-@Service
-@Transactional
-@RequiredArgsConstructor
+
 public class PostService {
     private final PostRepository postRepository;
     private final AccountService accountService;
 
-//    public Post createNewPost(PostRequestDto dto){
+//    public Post createNewPost(){
 //    }
 
     @Transactional(readOnly = true)
@@ -44,9 +42,9 @@ public class PostService {
         return post;
     }
 
-//    public Long updatePost(Long id,PostRequestDto dto) {
+//    public Long updatePost() {
 //    }
 
-//    public void deletePost(Long id, Long accountId){
+//    public void deletePost(){
 //    }
 }

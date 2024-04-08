@@ -13,31 +13,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("/posts")
+
 public class PostController {
     private final PostService postService;
 
     /*게시글 작성*/
-
+//    public PostResponseDto createNewPost(){
+//    }
 
     /*게시글 조회_전체*/
 //    public AllPostsResponseDto getAllPosts(){
 //    }
 
     /*게시글 조회_1개*/
-//    public PostResponseDto getOnePost(@PathVariable(name = "id")Long id){
+//    public PostResponseDto getOnePost(){
 //    }
 
     /*게시글 수정*/
-//    public PostResponseDto updatePost(@PathVariable(name = "id") Long id,
-//                                      @RequestBody @Valid final PostRequestDto dto){
+//    public PostResponseDto updatePost(){
 //    }
 
     /*게시글 삭제*/
-//    public String deletePost(@PathVariable(name = "id") Long id,
-//                             @RequestParam(name = "accountId") Long account_id){
+//    public String deletePost(){
 //    }
 
 }
