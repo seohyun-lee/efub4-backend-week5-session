@@ -53,16 +53,16 @@ public class PostController {
     @PutMapping("/{id}")
     public PostResponseDto updatePost(@PathVariable(name = "id") Long id,
                                       @RequestBody @Valid final PostRequestDto dto){
-        Long post_id = postService.updatePost(id,dto);
-        Post post = postService.findPostById(post_id);
+        Long postId = postService.updatePost(id,dto);
+        Post post = postService.findPostById(postId);
         return PostResponseDto.from(post, post.getAccount().getNickname());
     }
 
     /*게시글 삭제*/
     @DeleteMapping("/{id}")
     public String deletePost(@PathVariable(name = "id") Long id,
-                             @RequestParam(name = "accountId") Long account_id){
-        postService.deletePost(id, account_id);
+                             @RequestParam(name = "accountId") Long accountId){
+        postService.deletePost(id, accountId);
 
         return "성공적으로 삭제되었습니다.";
     }
