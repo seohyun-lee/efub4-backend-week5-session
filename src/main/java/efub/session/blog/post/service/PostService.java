@@ -16,13 +16,19 @@ import java.util.List;
 import static efub.session.blog.exception.ErrorCode.PERMISSION_REJECTED_USER;
 import static java.lang.Boolean.*;
 
-
+@Service
+@Transactional
+@RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
     private final AccountService accountService;
 
-//    public Post createNewPost(){
-//    }
+    public Post createNewPost(PostRequestDto dto){
+        Account account = accountService.findAccountById(Long.parseLong(dto.getAccountId()));
+        Post post = dto.toEntity(account);
+        Post savedPost = postRepository.save(post);
+        return savedPost;
+    }
 
     @Transactional(readOnly = true)
     public List<Post> findAllPosts(){
@@ -38,13 +44,24 @@ public class PostService {
     @Transactional(readOnly = true)
     public Post findPostById(Long postId){
         Post post = postRepository.findById(postId)
-                .orElseThrow(()-> new EntityNotFoundException("해당 id를 가진 Post를 찾을 수 없습니다.id="+postId));
+                .orElseThrow(()-> new EntityNotFoundException("해당 id를 가진 Post를 찾을 수 없습니다.id=" + postId));
         return post;
     }
 
-//    public Long updatePost() {
-//    }
+    public Long updatePost(Long id, PostRequestDto dto) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("해당 id를 가진 Post를 찾을 수 없습니다. id=" + id));
+        Account account = accountService.findAccountById(Long.parseLong(dto.getAccountId()));
+        post.update(dto, account);
+        return post.getPostId();
+    }
 
-//    public void deletePost(){
-//    }
+    public void deletePost(Long id, Long accountId){
+        Post post = postRepository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException("해당 id를 가진 Post를 찾을 수 없습니다.id=" + id));
+        if (accountId != post.getAccount().getAccountId()) {
+            throw new CustomDeleteException(PERMISSION_REJECTED_USER);
+        }
+        postRepository.delete(post);
+    }
 }

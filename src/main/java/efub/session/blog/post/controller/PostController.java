@@ -13,28 +13,55 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/posts")
 public class PostController {
     private final PostService postService;
 
     /*게시글 작성*/
-//    public PostResponseDto createNewPost(){
-//    }
+    @PostMapping
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public PostResponseDto createNewPost(@RequestBody @Valid final PostRequestDto dto){
+        Post savedPost = postService.createNewPost(dto);
+        return PostResponseDto.from(savedPost, savedPost.getAccount().getNickname());
+    }
 
     /*게시글 조회_전체*/
-//    public AllPostsResponseDto getAllPosts(){
-//    }
+    @GetMapping
+    public AllPostsResponseDto getAllPosts(){
+        List<PostResponseDto> list = new ArrayList<>();
+        List<Post> posts = postService.findAllPosts();
+        for (Post post : posts) {
+            PostResponseDto dto = PostResponseDto.from(post, post.getAccount().getNickname());
+            list.add(dto);
+        }
+        long count = postService.countAllPosts();
+        return new AllPostsResponseDto(list, count);
+    }
 
     /*게시글 조회_1개*/
-//    public PostResponseDto getOnePost(){
-//    }
+    @GetMapping("/{id}")
+    public PostResponseDto getOnePost(@PathVariable(name="id") Long id){
+        Post post = postService.findPostById(id);
+        return PostResponseDto.from(post, post.getAccount().getNickname());
+    }
 
     /*게시글 수정*/
-//    public PostResponseDto updatePost(){
-//    }
+    @PutMapping("/{id}")
+    public PostResponseDto updatePost(@PathVariable(name = "id") Long id,
+                                      @RequestBody @Valid final PostRequestDto dto){
+        Long post_id = postService.updatePost(id, dto);
+        Post post = postService.findPostById(post_id);
+        return PostResponseDto.from(post, post.getAccount().getNickname());
+    }
 
     /*게시글 삭제*/
-//    public String deletePost(){
-//    }
+    @DeleteMapping("/{id}")
+    public String deletePost(@PathVariable(name = "id") Long id,
+                             @RequestParam(name = "accountId") Long account_id){
+        postService.deletePost(id, account_id);
+        return "성공적으로 삭제되었습니다.";
+    }
 
 }
