@@ -53,8 +53,8 @@ public class PostController {
     @PutMapping("/{id}")
     public PostResponseDto updatePost(@PathVariable(name = "id") Long id,
                                       @RequestBody @Valid final PostRequestDto dto){
-        Long post_id = postService.updatePost(id,dto);
-        Post post = postService.findPostById(post_id);
+        Long postId = postService.updatePost(id,dto);
+        Post post = postService.findPostById(postId);
         return PostResponseDto.from(post, post.getAccount().getNickname());
     }
 
